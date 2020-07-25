@@ -25,6 +25,10 @@ public class CategoriaService {
         return categoria;
     }
 
+    public Categoria actualizarCategoria(Categoria categoria) {
+        return repoCategoria.save(categoria);
+    }
+
     public Categoria buscarPorId(Integer id) {
         Optional<Categoria> opCategoria = repoCategoria.findById(id);
 
@@ -37,4 +41,8 @@ public class CategoriaService {
             return null;
 
     }
-} 
+
+    public List<Categoria> listarTodas() {
+        return repoCategoria.findAll();
+    }
+}
