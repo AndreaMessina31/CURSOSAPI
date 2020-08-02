@@ -14,10 +14,10 @@ public class Persona {
     private String nombre;
 
     @Column(name = "pais_id")
-    private PaisEnum paisId;
+    private Integer paisId;
 
     @Column(name = "tipo_documento_id")
-    private TipoDocuEnum tipoDocumentoId;
+    private Integer tipoDocumentoId;
     private String documento;
 
     @Column(name = "fecha_nacimiento")
@@ -32,19 +32,19 @@ public class Persona {
     }
 
     public PaisEnum getPaisId() {
-        return paisId;
+        return PaisEnum.parse(this.paisId);
     }
 
     public void setPaisId(PaisEnum paisId) {
-        this.paisId = paisId;
+        this.paisId = paisId.getValue();
     }
 
     public TipoDocuEnum getTipoDocumentoId() {
-        return tipoDocumentoId;
+        return TipoDocuEnum.parse(this.tipoDocumentoId);
     }
 
     public void setTipoDocumentoId(TipoDocuEnum tipoDocumentoId) {
-        this.tipoDocumentoId = tipoDocumentoId;
+        this.tipoDocumentoId = tipoDocumentoId.getValue();
     }
 
     public String getDocumento() {
