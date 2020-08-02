@@ -5,8 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import ar.com.ada.api.cursos.entities.*;
-import ar.com.ada.api.cursos.entities.Pais.PaisEnum;
-import ar.com.ada.api.cursos.entities.Pais.PaisEnum.TipoDocuEnum;
+
 
 
 

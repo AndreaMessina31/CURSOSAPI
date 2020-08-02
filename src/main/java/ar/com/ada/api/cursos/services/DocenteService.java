@@ -17,7 +17,8 @@ public class DocenteService {
     DocenteRepository docenteRepository;
 
     public boolean crearDocente(Docente docente) {
-        if (docenteRepository.existsDocente(docente.getPaisId(), docente.getTipoDocumentoId(), docente.getDocumento()))
+        if (docenteRepository.existsDocente(docente.getPaisId().getValue(), docente.getTipoDocumentoId().getValue(),
+                docente.getDocumento()))
             return false;
         docenteRepository.save(docente);
         return true;
@@ -57,6 +58,16 @@ public class DocenteService {
 
     public List<Docente> listaDocentes() {
         return docenteRepository.findAll();
+    }
+
+    public boolean docenteExiste(Docente docente) {
+
+        if (docenteRepository.existsDocente(docente.getPaisId().getValue(), docente.getTipoDocumentoId().getValue(),
+                docente.getDocumento()))
+            return true;
+        else
+            return false;
+
     }
 
 }
