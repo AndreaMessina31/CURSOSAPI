@@ -35,8 +35,6 @@ public class CursoController {
     gR.id = cursoCreado.getCursoId();
     return ResponseEntity.ok(gR);
 
-    // GenericResponse gR = new GenericResponse();
-    // return ResponseEntity.ok(gR);
   }
   // y=f(x)=x+2
   // f(int x ) { return x + 2;}
