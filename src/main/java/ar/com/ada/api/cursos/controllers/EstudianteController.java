@@ -1,5 +1,6 @@
 package ar.com.ada.api.cursos.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,10 +9,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import ar.com.ada.api.cursos.entities.Curso;
 import ar.com.ada.api.cursos.entities.Estudiante;
+import ar.com.ada.api.cursos.entities.Inscripcion;
+import ar.com.ada.api.cursos.models.request.InscripcionRequest;
 import ar.com.ada.api.cursos.models.response.GenericResponse;
+import ar.com.ada.api.cursos.services.CursoService;
 import ar.com.ada.api.cursos.services.EstudianteService;
 
 @RestController
@@ -20,6 +26,9 @@ public class EstudianteController {
 
   @Autowired
   EstudianteService estudianteService;
+  @Autowired
+  CursoService cursoService;
+
 
   // Post: que recibimos algo, que nos permite instanciar una Categoria y ponerle
   // datos.
@@ -70,4 +79,54 @@ public class EstudianteController {
       List<Estudiante> listaEstudiantes = estudianteService.listaEstudiantes();
       return ResponseEntity.ok(listaEstudiantes);
   }  
+
+/*
+     * - Estudiante -> Perspectiva estudiante: Ver cursos disponibles! (son todos
+     * los cursos donde no este inscripto) - Estudiante -> ver mis cursos(solo
+     * pueden verlo los estudiantes)
+     * 
+     * - /api/estudiantes/{id}/cursos?disponibles=true&categoria=1 o -
+     * /api/estudiantes/{id}/cursos - /api/estudiantes/{id}/cursos/disponibles -> en
+     * este caso es un metodo separado
+     */
+    @GetMapping("/api/estudiantes/{id}/cursos")
+    public ResponseEntity<List<Curso>> listaCursos(@PathVariable Integer id,
+            @RequestParam(value = "disponibles", required = false) boolean disponibles) {
+        List<Curso> listaCursos = new ArrayList<>();
+        Estudiante estudiante = estudianteService.buscarPorId(id);
+        if (disponibles) {
+            // listaCursos = algo que nos devuelva la llista de cursos disponibles.
+            listaCursos = cursoService.listaCursosDisponibles(estudiante);
+        } else {
+            listaCursos = estudiante.getCursosQueAsiste();
+        }
+
+        return ResponseEntity.ok(listaCursos);
+
+    }
+
+    // - Estudiante -> Inscribirse a un curso(por defecto haremos que la inscripcion
+    // se apruebe de una)!
+
+    @PostMapping("/api/estudiantes/{id}/inscripciones")
+    public ResponseEntity<GenericResponse> inscribir(@PathVariable Integer id, @RequestBody InscripcionRequest iR) {
+
+        Inscripcion inscripcionCreada = estudianteService.inscribir(id, iR.cursoId);
+        GenericResponse gR = new GenericResponse();
+        if (inscripcionCreada == null) {
+            gR.isOk = false;
+            gR.message = "La inscripcion no pudo ser realizada";
+            return ResponseEntity.badRequest().body(gR);
+        } else {
+            gR.isOk = true;
+            gR.message = "La inscripcion se realizo con exito";
+            gR.id = inscripcionCreada.getInscripcionId();
+            return ResponseEntity.ok(gR);
+        }
+
+    }
+
+
+
+
 }

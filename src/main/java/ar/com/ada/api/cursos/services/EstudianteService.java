@@ -7,7 +7,10 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ar.com.ada.api.cursos.entities.Curso;
 import ar.com.ada.api.cursos.entities.Estudiante;
+import ar.com.ada.api.cursos.entities.Inscripcion;
+import ar.com.ada.api.cursos.entities.Inscripcion.EstadoInscripcionEnum;
 import ar.com.ada.api.cursos.entities.Pais.PaisEnum;
 import ar.com.ada.api.cursos.entities.Pais.PaisEnum.TipoDocuEnum;
 import ar.com.ada.api.cursos.repos.EstudianteRepository;
@@ -17,6 +20,11 @@ public class EstudianteService {
 
     @Autowired
     EstudianteRepository estudianteRepo;
+
+    @Autowired
+    CursoService cursoService;
+
+
 
     public boolean crearEstudiante(Estudiante estudiante) {
 
@@ -70,6 +78,32 @@ public class EstudianteService {
             return false;
 
     }
+    public Inscripcion inscribir(Integer estudianteId, Integer cursoId) {
+        // TODO:buscar el estudiante por Id
+        // buscar el curso por Id;
+        // Crear la inscripcion(aprobada por defecto)
+        // Asignar la inscripcion al Usuario del Estudiante
+        // Agregar el Estudiante a la Lista de Estudiantes que tiene Curso
+
+        Estudiante estudiante = buscarPorId(estudianteId);
+        Curso curso = cursoService.buscarPorId(cursoId);
+        Inscripcion inscripcion = new Inscripcion();
+
+        inscripcion.setFecha(new Date());
+        inscripcion.setEstadoInscripcionId(EstadoInscripcionEnum.ACTIVO);
+
+        // inscripcion.setCurso(curso);
+        inscripcion.setUsuario(estudiante.getUsuario());
+
+        curso.agregarInscripcion(inscripcion);
+        curso.asignarEstudiante(estudiante);
+
+        estudianteRepo.save(estudiante);
+        return inscripcion;
+    }
+
+
+
 
 } 
 
