@@ -1,11 +1,14 @@
 package ar.com.ada.api.cursos.services;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ar.com.ada.api.cursos.entities.Curso;
+import ar.com.ada.api.cursos.entities.Docente;
 import ar.com.ada.api.cursos.repos.CursoRepository;
 
 @Service
@@ -15,6 +18,8 @@ public class CursoService {
     CursoRepository cursoRepository;
     @Autowired
     CategoriaService categoriaService;
+    @Autowired
+    DocenteService docenteService;
 
     // 21/07 21:39 Hernán dijo que algo vamos a tener que cambiar en el resultado
     public boolean crearCurso(Curso curso) {
@@ -49,4 +54,53 @@ public class CursoService {
         return cursoRepository.findAll();
 
     }
+
+    public List<Curso> listaCursosSinDocentes() {
+
+        List<Curso> listaCursosSinDoc = new ArrayList<>();
+        for (Curso curso : listaCursos()) {
+            if (curso.getDocentes().isEmpty()) {
+                listaCursosSinDoc.add(curso);
+            }
+        }
+        return listaCursosSinDoc;
+
+    }
+
+    public Curso buscarPorId(Integer id) {
+        Optional<Curso> opCurso = cursoRepository.findById(id);
+
+        if (opCurso.isPresent())
+            return opCurso.get();
+        else
+            return null;
+
+    }
+
+    public boolean asignarDocente(Integer cursoId, Integer docenteId) {
+        Curso curso = buscarPorId(cursoId);
+
+        // Iteramos la lista de docentes que tiene el curso
+
+        // CURSO : d1, d2, d3, d4
+        // buscar el docente 3
+        // primer vuelta, curso -> d1, d2, d3, d4, d3(si en el else agrego, ocurre este
+        // error)
+        for (Docente d : curso.getDocentes()) {
+            if (d.getDocenteId().equals(docenteId))
+                return false; // Si lo encuentra no hay que hacer nadas
+            // Hay que terminar de recorrer.
+        }
+
+        // Asigno al docente usando el metodo asignarDocente
+        // Que habiamos creado para la relacion bidireccional
+        curso.asignarDocente(docenteService.buscarPorId(docenteId));
+
+        // Actualizo el curso en la base de datos
+        // dejo que el repositorio haga su magia(y cruzamos los dedos)
+        cursoRepository.save(curso);
+
+        return true;
+    }
+
 }

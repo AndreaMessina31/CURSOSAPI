@@ -6,11 +6,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import ar.com.ada.api.cursos.entities.Categoria;
 import ar.com.ada.api.cursos.repos.CategoriaRepository;
-import ar.com.ada.api.cursos.services.*;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
+import ar.com.ada.api.cursos.services.*;
 import java.util.*;
 
 @SpringBootTest
@@ -18,6 +16,7 @@ class DemoApplicationTests {
 
 	@Autowired
 	CategoriaRepository repoCategoria;
+	@Autowired
 	CategoriaService categoriaService;
 
 	@Test
