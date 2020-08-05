@@ -23,14 +23,14 @@ public class Curso {
     // mappedBy!
     @ManyToMany(mappedBy = "cursosQueDicta")
     // diferenciamos cursos de docente y de estudiante!!! VER LINEA 30
-    private List<Docente> docentes;
+    private List<Docente> docentes= new ArrayList<>();
 
     // el mappedby hara referencia al ATRIBUTO que se encuentra en el objeto
     // estudiante= "cursos"
     // En casos de ManytoMany, OnetoOne o ManytoOne, el owner es el que lleva el
     // mappedBy!
     @ManyToMany(mappedBy = "cursosQueAsiste")
-    private List<Estudiante> estudiantes;
+    private List<Estudiante> estudiantes= new ArrayList<>();
 
     @Column(name = "duracion_horas")
     private Integer duracionHoras;
@@ -38,14 +38,15 @@ public class Curso {
 
     @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<Clase> clases;
+    private List<Clase> clases= new ArrayList<>();
  // @JsonIgnore 
     @ManyToMany(mappedBy = "cursos")
-    private List<Categoria> categorias;
+    private List<Categoria> categorias= new ArrayList<>();
+
 
     @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<Inscripcion> inscripciones;
+    private List<Inscripcion> inscripciones= new ArrayList<>();
 
     public Integer getCursoId() {
         return cursoId;

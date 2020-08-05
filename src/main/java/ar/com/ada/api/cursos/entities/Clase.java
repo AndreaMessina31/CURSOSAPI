@@ -29,7 +29,7 @@ public class Clase {
 
     @OneToMany(mappedBy = "clase", cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<Contenido> contenidos;
+    private List<Contenido> contenidos= new ArrayList<>();
 
     public Integer getClaseId() {
         return claseId;

@@ -1,5 +1,6 @@
 package ar.com.ada.api.cursos.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
@@ -27,7 +28,7 @@ public class Categoria {
     @JoinTable(name = "curso_x_categoria", joinColumns = @JoinColumn(name = "categoria_id"), inverseJoinColumns = @JoinColumn(name = "curso_id"))
     // la tabla intermedia "curso x categoria", es creada por la anotacion JoinTable
     // y sus dos columnas son FK a las tablas categoria y curso
-    private List<Curso> cursos;
+    private List<Curso> cursos= new ArrayList<>();
 
     public Integer getCategoriaId() {
         return categoriaId;

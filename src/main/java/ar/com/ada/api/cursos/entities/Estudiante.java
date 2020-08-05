@@ -23,7 +23,7 @@ public class Estudiante extends Persona {
     // que se encuentra en la linea 26(curso)
 
     @JoinTable(name = "estudiante_x_curso", joinColumns = @JoinColumn(name = "estudiante_id"), inverseJoinColumns = @JoinColumn(name = "curso_id"))
-    private List<Curso> cursosQueAsiste;
+    private List<Curso> cursosQueAsiste= new ArrayList<>();
 
     // mappedBY (lo lleva el OWNER de la relacion):nombre del atributo en el objeto
     // USUARIO
