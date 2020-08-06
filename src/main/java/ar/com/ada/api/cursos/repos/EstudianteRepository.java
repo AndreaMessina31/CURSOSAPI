@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import ar.com.ada.api.cursos.entities.Estudiante;
+import ar.com.ada.api.cursos.entities.Pais.PaisEnum;
 
 @Repository
 public interface EstudianteRepository extends JpaRepository<Estudiante, Integer> {
@@ -14,5 +15,4 @@ public interface EstudianteRepository extends JpaRepository<Estudiante, Integer>
 
     @Query("select e from Estudiante e where e.paisId=:pais and e.tipoDocumentoId=:tipoDocuEnum and e.documento=:documento")
     Estudiante buscarEstudiantePorDocu(Integer pais, Integer tipoDocuEnum, String documento);
-
-} 
+}
