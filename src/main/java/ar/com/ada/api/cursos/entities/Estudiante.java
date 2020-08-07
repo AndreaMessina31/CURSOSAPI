@@ -4,6 +4,8 @@ import java.util.*;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "estudiante")
 public class Estudiante extends Persona {
@@ -27,6 +29,7 @@ public class Estudiante extends Persona {
 
     // mappedBY (lo lleva el OWNER de la relacion):nombre del atributo en el objeto
     // USUARIO
+    @JsonIgnore
     @OneToOne(mappedBy = "estudiante", cascade = CascadeType.ALL) // nombre del atributo en el obj usuario)
     private Usuario usuario;
 
