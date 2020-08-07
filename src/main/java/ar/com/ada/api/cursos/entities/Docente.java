@@ -28,7 +28,7 @@ public class Docente extends Persona {
     @JsonIgnore
     private List<Curso> cursosQueDicta= new ArrayList<>();
 
-    @OneToOne(mappedBy = "docente")
+    @OneToOne(mappedBy = "docente", cascade = CascadeType.ALL)
     @JsonIgnore
     private Usuario usuario;
 

@@ -24,7 +24,7 @@ public class DocenteService {
         return true;
     }
 
-    public Docente crearDocente(String nombre, PaisEnum paisEnum, TipoDocuEnum TipoDocuEnum, String documento,
+    public Docente crearDocente(String nombre, Integer paisEnum, TipoDocuEnum TipoDocuEnum, String documento,
             Date fechaNacimiento) {
         Docente docente = new Docente();
         docente.setNombre(nombre);

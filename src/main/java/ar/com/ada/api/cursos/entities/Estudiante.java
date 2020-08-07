@@ -27,7 +27,7 @@ public class Estudiante extends Persona {
 
     // mappedBY (lo lleva el OWNER de la relacion):nombre del atributo en el objeto
     // USUARIO
-    @OneToOne(mappedBy = "estudiante")
+    @OneToOne(mappedBy = "estudiante", cascade = CascadeType.ALL) // nombre del atributo en el obj usuario)
     private Usuario usuario;
 
     public Integer getEstudianteId() {
@@ -52,6 +52,7 @@ public class Estudiante extends Persona {
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
+        usuario.setEstudiante(this);
     }
 
 }

@@ -4,6 +4,8 @@ import java.util.*;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import ar.com.ada.api.cursos.entities.Pais.PaisEnum;
 import ar.com.ada.api.cursos.entities.Pais.PaisEnum.TipoDocuEnum;
 
@@ -31,16 +33,13 @@ public class Persona {
         this.nombre = nombre;
     }
 
+    // esta ok?
     public Integer getPaisId() {
         return this.paisId;
     }
 
     public void setPaisId(Integer paisId) {
         this.paisId = paisId;
-    }
-
-    public void setPaisId(PaisEnum paisId) {
-        this.paisId = paisId.getValue();
     }
 
     public TipoDocuEnum getTipoDocumentoId() {

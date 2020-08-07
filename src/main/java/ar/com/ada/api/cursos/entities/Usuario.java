@@ -28,7 +28,7 @@ public class Usuario {
 
     // ver linea 32
     @Column(name = "tipo_usuario_id")
-    private TipoUsuarioEnum tipoUsuarioId;
+    private Integer tipoUsuarioId;
 
     @OneToOne
     @JoinColumn(name = "docente_id", referencedColumnName = "docente_id")
@@ -110,19 +110,11 @@ public class Usuario {
     }
 
     public TipoUsuarioEnum getTipoUsuarioId() {
-        return tipoUsuarioId;
+        return TipoUsuarioEnum.parse(this.tipoUsuarioId);
     }
 
     public void setTipoUsuarioId(TipoUsuarioEnum tipoUsuarioId) {
-        this.tipoUsuarioId = tipoUsuarioId;
-    }
-
-    public Docente getDocente() {
-        return docente;
-    }
-
-    public void setDocente(Docente docente) {
-        this.docente = docente;
+        this.tipoUsuarioId = tipoUsuarioId.getValue();
     }
 
     public Estudiante getEstudiante() {
@@ -133,6 +125,14 @@ public class Usuario {
         this.estudiante = estudiante;
     }
 
+    public Docente getDocente() {
+        return docente;
+    }
+
+    public void setDocente(Docente docente) {
+        this.docente = docente;
+    }
+
     public List<Inscripcion> getInscripciones() {
         return inscripciones;
     }
@@ -141,4 +141,18 @@ public class Usuario {
         this.inscripciones = inscripciones;
     }
 
-}
+    public Integer obtenerEntityId() {
+        // TODO, segun el tipo de usuario, devolver el docenteId o estudianteId o nada!
+
+        switch (this.getTipoUsuarioId()) {
+            case ESTUDIANTE:
+                return this.getEstudiante().getEstudianteId();
+            case DOCENTE:
+                return this.getDocente().getDocenteId();
+
+            default:
+                break;
+        }
+        return null;
+    }
+} 
