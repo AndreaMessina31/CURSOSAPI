@@ -23,7 +23,7 @@ public class Estudiante extends Persona {
     // que estamos trabajando ahora
     // Por ultimo, el nombre de la columna con la que joineamos estudiante,
     // que se encuentra en la linea 26(curso)
-
+@JsonIgnore
     @JoinTable(name = "estudiante_x_curso", joinColumns = @JoinColumn(name = "estudiante_id"), inverseJoinColumns = @JoinColumn(name = "curso_id"))
     private List<Curso> cursosQueAsiste= new ArrayList<>();
 

@@ -6,6 +6,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import org.hibernate.annotations.*;
 
 @Entity
@@ -29,6 +31,7 @@ public class Curso {
     // estudiante= "cursos"
     // En casos de ManytoMany, OnetoOne o ManytoOne, el owner es el que lleva el
     // mappedBy!
+    @JsonIgnore
     @ManyToMany(mappedBy = "cursosQueAsiste")
     private List<Estudiante> estudiantes= new ArrayList<>();
 
@@ -43,7 +46,7 @@ public class Curso {
     @ManyToMany(mappedBy = "cursos")
     private List<Categoria> categorias= new ArrayList<>();
 
-
+@JsonIgnore
     @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Inscripcion> inscripciones= new ArrayList<>();
