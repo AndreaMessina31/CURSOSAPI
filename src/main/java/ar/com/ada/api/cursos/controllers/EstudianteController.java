@@ -13,9 +13,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ar.com.ada.api.cursos.entities.Curso;
+import ar.com.ada.api.cursos.entities.Docente;
 import ar.com.ada.api.cursos.entities.Estudiante;
 import ar.com.ada.api.cursos.entities.Inscripcion;
 import ar.com.ada.api.cursos.models.request.InscripcionRequest;
+import ar.com.ada.api.cursos.models.response.CursoEstudianteResponse;
+import ar.com.ada.api.cursos.models.response.DocenteSimplificadoResponse;
 import ar.com.ada.api.cursos.models.response.GenericResponse;
 import ar.com.ada.api.cursos.services.CursoService;
 import ar.com.ada.api.cursos.services.EstudianteService;
@@ -90,7 +93,7 @@ public class EstudianteController {
      * este caso es un metodo separado
      */
     @GetMapping("/api/estudiantes/{id}/cursos")
-    public ResponseEntity<List<Curso>> listaCursos(@PathVariable Integer id,
+    public ResponseEntity<List<CursoEstudianteResponse>> listaCursos(@PathVariable Integer id,
             @RequestParam(value = "disponibles", required = false) boolean disponibles) {
         List<Curso> listaCursos = new ArrayList<>();
         Estudiante estudiante = estudianteService.buscarPorId(id);
@@ -101,7 +104,28 @@ public class EstudianteController {
             listaCursos = estudiante.getCursosQueAsiste();
         }
 
-        return ResponseEntity.ok(listaCursos);
+        List<CursoEstudianteResponse> listaSimplificada = new ArrayList<>();
+
+        // Transformar, cada item de la lista de cursos, a un CursoEstudianteResponse
+        for (Curso curso : listaCursos) {
+            CursoEstudianteResponse nuevoCurso = new CursoEstudianteResponse();
+            nuevoCurso.nombre = curso.getNombre();
+            nuevoCurso.cursoId = curso.getCursoId();
+            nuevoCurso.descripcion = curso.getDescripcion();
+            nuevoCurso.categorias = curso.getCategorias();
+            nuevoCurso.duracionHoras = curso.getDuracionHoras();
+
+            for (Docente docente : curso.getDocentes()) {
+                DocenteSimplificadoResponse dr = new DocenteSimplificadoResponse();
+                dr.docenteId = docente.getDocenteId();
+                dr.nombre = docente.getNombre();
+                nuevoCurso.docentes.add(dr);
+            }
+
+            listaSimplificada.add(nuevoCurso);
+        }
+
+        return ResponseEntity.ok(listaSimplificada);
 
     }
 
