@@ -17,6 +17,7 @@ import ar.com.ada.api.cursos.entities.Pais.PaisEnum.TipoDocuEnum;
 import ar.com.ada.api.cursos.entities.Usuario.TipoUsuarioEnum;
 import ar.com.ada.api.cursos.repos.UsuarioRepository;
 import ar.com.ada.api.cursos.security.Crypto;
+import ar.com.ada.api.cursos.sistema.comm.EmailService;
 
 @Service
 public class UsuarioService {
@@ -46,7 +47,8 @@ public class UsuarioService {
 
       throw new BadCredentialsException("Usuario o contraseña invalida");
     }
-
+    
+    
     return u;
   }
 
@@ -91,7 +93,7 @@ public class UsuarioService {
 
     // Aca enviamos email.
     emailService.SendEmail(usuario.getEmail(), "Curso Pinturillo: Registracion exitossa!!!",
-        "Hola " + usuario.getUsername() + ", bienvenida al sistema de cursos");
+        "Hola " + usuario.getFullname() + ", bienvenida al sistema de cursos");
     return usuario;
 
   }

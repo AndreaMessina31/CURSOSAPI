@@ -10,10 +10,12 @@ import org.springframework.stereotype.Service;
 import ar.com.ada.api.cursos.entities.Curso;
 import ar.com.ada.api.cursos.entities.Estudiante;
 import ar.com.ada.api.cursos.entities.Inscripcion;
+import ar.com.ada.api.cursos.entities.Usuario;
 import ar.com.ada.api.cursos.entities.Inscripcion.EstadoInscripcionEnum;
 import ar.com.ada.api.cursos.entities.Pais.PaisEnum;
 import ar.com.ada.api.cursos.entities.Pais.PaisEnum.TipoDocuEnum;
 import ar.com.ada.api.cursos.repos.EstudianteRepository;
+import ar.com.ada.api.cursos.sistema.comm.EmailService;
 
 @Service
 public class EstudianteService {
@@ -23,13 +25,13 @@ public class EstudianteService {
 
     @Autowired
     CursoService cursoService;
-
-
+    @Autowired
+    EmailService emailService;
 
     public boolean crearEstudiante(Estudiante estudiante) {
 
         if (estudianteRepo.existsEstudiante(estudiante.getPaisId(), estudiante.getTipoDocumentoId().getValue(),
-        estudiante.getDocumento())) {
+                estudiante.getDocumento())) {
 
             return false;
         }
@@ -71,13 +73,14 @@ public class EstudianteService {
 
     public boolean estudianteExiste(Estudiante estudiante) {
 
-        if (estudianteRepo.existsEstudiante(estudiante.getPaisId(),
-                estudiante.getTipoDocumentoId().getValue(), estudiante.getDocumento()))
+        if (estudianteRepo.existsEstudiante(estudiante.getPaisId(), estudiante.getTipoDocumentoId().getValue(),
+                estudiante.getDocumento()))
             return true;
         else
             return false;
 
     }
+
     public Inscripcion inscribir(Integer estudianteId, Integer cursoId) {
         // TODO:buscar el estudiante por Id
         // buscar el curso por Id;
@@ -99,12 +102,11 @@ public class EstudianteService {
         curso.asignarEstudiante(estudiante);
 
         estudianteRepo.save(estudiante);
+
+        emailService.SendEmail(estudiante.getUsuario().getEmail(), "Curso Pinturillo: Inscripción exitosa!!!",
+                "Hola " + estudiante.getUsuario().getFullname() + ", Ya estás inscripto en el curso elegido");
+
         return inscripcion;
     }
 
-
-
-
-} 
-
- 
+}
