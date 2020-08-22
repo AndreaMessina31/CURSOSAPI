@@ -19,7 +19,6 @@ import ar.com.ada.api.cursos.security.jwt.JWTTokenUtil;
 import ar.com.ada.api.cursos.services.JWTUserDetailsService;
 import ar.com.ada.api.cursos.services.UsuarioService;
 
-
 /**
  * AuthController
  */
@@ -48,6 +47,12 @@ public class AuthController {
         Usuario usuario = usuarioService.crearUsuario(req.userType, req.fullName, req.country, req.identificationType,
                 req.identification, req.birthDate, req.email, req.password);
 
+        if (usuario.getUsuarioId() == null) {
+            r.isOk = false;
+            r.message = "error interno al crear el usuario. chequear si esta creado previamente";
+            return ResponseEntity.badRequest().body(r);
+        }
+
         r.isOk = true;
         r.message = "Te registraste con exitoooo!!!!!!!";
         r.userId = usuario.getUsuarioId(); // <-- AQUI ponemos el numerito de id para darle a front!
@@ -75,7 +80,7 @@ public class AuthController {
 
         // Cambio para que devuelva el full perfil
         // Usuario u = usuarioService.buscarPorUsername(authenticationRequest.username);
-        
+
         LoginResponse r = new LoginResponse();
         r.id = usuarioLogueado.getUsuarioId();
         r.userType = usuarioLogueado.getTipoUsuarioId();
@@ -88,4 +93,4 @@ public class AuthController {
 
     }
 
-} 
+}
