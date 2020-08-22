@@ -81,7 +81,7 @@ public class EstudianteService {
 
     }
 
-    public Inscripcion inscribir(Integer estudianteId, Integer cursoId) {
+    public Inscripcion  inscribir(Integer estudianteId, Integer cursoId) {
         // TODO:buscar el estudiante por Id
         // buscar el curso por Id;
         // Crear la inscripcion(aprobada por defecto)

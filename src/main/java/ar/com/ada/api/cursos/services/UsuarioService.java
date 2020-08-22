@@ -52,7 +52,7 @@ public class UsuarioService {
     return u;
   }
 
-  public Usuario crearUsuario(TipoUsuarioEnum tipoUsuario, String nombre, int pais, TipoDocuEnum tipoDocumento,
+  public Usuario crearUsuario(TipoUsuarioEnum tipoUsuario, String nombre, Integer pais, TipoDocuEnum tipoDocumento,
       String documento, Date fechaNacimiento, String email, String password) {
 
     // Crear usuario: REGISTRA Un nuevo usuario
@@ -60,6 +60,7 @@ public class UsuarioService {
 
     Usuario usuario = new Usuario();
     usuario.setTipoUsuarioId(tipoUsuario);
+    usuario.setFullname(nombre);
     usuario.setUsername(email);
     usuario.setPassword(Crypto.encrypt(password, email.toLowerCase()));
     usuario.setEmail(email);
@@ -88,6 +89,9 @@ public class UsuarioService {
         break;
 
       default:
+      case STAFF :
+      usuarioRepository.save(usuario);
+
         break;
     }
 

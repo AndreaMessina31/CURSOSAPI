@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,6 +26,7 @@ public class CursoController {
   CursoService cursoService;
 
   @PostMapping("/api/cursos")
+  @PreAuthorize("hasAuthority('CLAIM_userType_STAFF')")
   public ResponseEntity<GenericResponse> crearCurso(@RequestBody CursoRequest cursoReq) {
 
     Curso cursoCreado = cursoService.crearCurso(cursoReq.nombre, cursoReq.categoriaId, cursoReq.duracionHoras,
@@ -59,6 +61,7 @@ public class CursoController {
   // front si envia ese parametro con el valor true, filtramos.
 
   @GetMapping("/api/cursos")
+  @PreAuthorize("hasAuthority('CLAIM_userType_STAFF')")
   public ResponseEntity<List<Curso>> listaCursos(
       @RequestParam(value = "sinDocentes", required = false) boolean sinDocentes) {
     List<Curso> listaCursos = new ArrayList<>();
@@ -78,6 +81,7 @@ public class CursoController {
   // /api/cursos/docentes/25 : este representaria al id del docente
   // /api/cursos/25/docentes: este prepresentaria al id del curso.
   @PostMapping("/api/cursos/{cursoId}/docentes")
+  @PreAuthorize("hasAuthority('CLAIM_userType_STAFF')")
   public ResponseEntity<GenericResponse> asignarDocente(@PathVariable Integer cursoId,
       @RequestBody CursoAsigDocRequest cADR) {
     GenericResponse gR = new GenericResponse();

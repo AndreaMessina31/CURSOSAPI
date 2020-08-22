@@ -129,20 +129,19 @@ public class CursoService {
 
         // Asigno al docente usando el metodo asignarDocente
         // Que habiamos creado para la relacion bidireccional
-        Docente docente=  docenteService.buscarPorId(docenteId)   ;  
-         curso.asignarDocente(docente);
+        Docente docente = docenteService.buscarPorId(docenteId);
+        curso.asignarDocente(docente);
 
         // Actualizo el curso en la base de datos
         // dejo que el repositorio haga su magia(y cruzamos los dedos)
         cursoRepository.save(curso);
 
-        if(docente.getUsuario()!=null){
+        if (docente.getUsuario() != null) {
 
-        
-        emailService.SendEmail(docente.getUsuario().getEmail(), "Curso Pinturillo: Asignación exitosa!!!",
-                "Hola " + docente.getUsuario().getFullname() + ", Se te ha asignado el curso exitosamente");
-            }
+            emailService.SendEmail(docente.getUsuario().getEmail(), "Curso Pinturillo: Asignación exitosa!!!",
+                    "Hola " + docente.getUsuario().getFullname() + ", Se te ha asignado el curso exitosamente");
+        }
         return true;
-    
 
+    }
 }

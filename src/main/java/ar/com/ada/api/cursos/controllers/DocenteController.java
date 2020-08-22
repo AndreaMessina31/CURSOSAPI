@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import ar.com.ada.api.cursos.entities.*;
@@ -21,6 +22,7 @@ public class DocenteController {
     // Post: que recibimos algo, que nos permite instanciar una Categoria y ponerle
     // datos.
     @PostMapping("/api/docentes")
+    @PreAuthorize("hasAuthority('CLAIM_userType_STAFF')")
     public ResponseEntity<GenericResponse> crearDocente(@RequestBody Docente docente) {
 
 
@@ -48,6 +50,7 @@ public class DocenteController {
     }
 
     @GetMapping("/api/docentes/{id}")
+    @PreAuthorize("hasAuthority('CLAIM_userType_STAFF') or (hasAuthority('CLAIM_userType_DOCENTE') and hasAuthority('CLAIM_entityId_'+#id))")
     ResponseEntity<Docente> buscarPorIdDocente(@PathVariable Integer id) {
         Docente docente = docenteService.buscarPorId(id);
         if (docente == null)
@@ -64,6 +67,7 @@ public class DocenteController {
     // }
 
     @GetMapping("/api/docentes")
+    @PreAuthorize("hasAuthority('CLAIM_userType_STAFF')")
     ResponseEntity<List<Docente>> listarDocentes() {
         List<Docente> listaDocentes = docenteService.listaDocentes();
         return ResponseEntity.ok(listaDocentes);
