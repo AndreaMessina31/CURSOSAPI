@@ -1,0 +1,51 @@
+EmpresaId: 4
+TipoServicio: 13 (Educacion)
+
+ALTA del deudor en PagADA
+Usar Endpoint: {{api_url}}/api/deudores
+
+Escenario1 - En la inscripcion)
+- en la inscripcion creamos el Deudor, pero tiene que ser en la primer inscripcion.
+- si el estudiante ya tiene un ID de deudor en PagADA: no crear un deudor en PagADA
+- si tiene, crear el deudor, guardar el id generado en nuestra tabla(estudiante)
+
+Escenario2 - En la registracion)
+
+Es igual al 1, solo que ocurre en la registracion, pero tiene de contra qeu creammos deudores 
+sin saber si van a pagar, y ante eventos de qeu por ejemplo, nos facturen por deudor, estamos en el 
+horno.
+
+Conclusion: nos quedamos con ponerlo en la Inscripcion.
+
+
+ALTA DE LA DEUDA
+- Tiene que ocurrir despues de la generacion del deudor, por lo tanto,el alta tiene que ser
+durante la inscripcioion(despus de crear el deudor):
+- Los datos como IMPORTE, FECHA EMISION, FECHA VENCIMIENTO, NUMERO Y CODIGO DE BARRAS en el caso de FACTURAS
+Debe ser generado previamente impactando contra la Tax Authority del pais. O hacerlo diferido.
+En el caso de diferido, podesmo "inventar" las fechas pero no el importe. El importe debemos tenerlo en algun lado.
+No nos meteremos con temas de como esta inscripto en la AFIP el deudor.
+
+Vamos a tener que guardar el importe, por ejemplo en curso.
+
+Para nuestro caso, guardaremos el importe del curso en la tabla curso(en que moneda?)
+
+Luego en la inscripcion guardaremos el importe, fecha de inscripcion lo usaremos como fecha de emision.
+la fecha de vencimiento de pago de inscripcion dependera de nuestro negocio, ahora nosotros haremos que el vencimiento
+sea la misma fecha de inscripcion, que es el mismo momento en que se inscribe, osea new Date().
+
+Si creamos la inscripcion primero, que estado tiene la inscripcion? PENDIENTE
+Si el pago es en el ACTO(o sea en el mismo moento de inscribirse): 
+
+pasos: 1) creo la inscripcion: estado PENDIENTE.
+2) crear la deuda(o sea crear el servicio en PAGADA, porque si usamos nro de inscripcion como ID de Servicio, necesitamos
+primero ese valor(el del paso 1).
+3) Pagar, o sea ejecutar la API de pago, post creacion de deuda.
+4) si todo esta ok, modificar la inscripcion a ACTIVA
+
+Notificaciones: enviar por mail por inscripcion.
+
+metodos a usar de pagada: Usar Endpoint: {{api_url}}/api/servicios para crear y pagar
+
+
+
